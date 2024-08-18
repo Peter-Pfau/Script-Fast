@@ -1,18 +1,26 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- https://www.youtube.com/watch?v=GTSNkuKn5ls -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="Assets/css/main.css">
-    <link rel="stylesheet" href="Assets/css/modal.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/modal.css">
+    <!-- highlight.js Syntax Highlight -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark-reasonable.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/qtcreator-dark.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/docco.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/devibeans.css"> -->
+
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <title>Script Fast</title>
 </head>
 <body>
     <div class="Container">
-        <!-- <form action="" method="post"> -->
-        <!-- <form action="" > -->
+   
             <h2>Script Fast</h2>
             <div class="content">
                 <div class="input-box">
@@ -28,12 +36,6 @@
                     <label for="script-function">Script Function:</label>
                     <select id="script-function">
 
-                        <!-- <option value="Service">Service</option>
-                        <option value="OS">Operating System</option>
-                        <option value="DNSCache">DNS Cache</option>
-                        <option value="HotFix">HotFix</option>
-                        <option value="TimeZone">Get-TimeZone</option>
-                        <option value="Memory">Memory</option> -->
                     </select>
                 </div>
                 <div class="input-box">
@@ -56,6 +58,8 @@
                     <label for="Intermediate">Intermediate</label>
                     <input type="radio" name="complexity" id="Advanced" value="Advanced">
                     <label for="Advanced">Advanced</label>
+                    <input type="radio" name="complexity" id="Multi-Threaded" value="Multi-Threaded">
+                    <label for="Multi-Threaded">Multi-Threaded</label>
                     
                 </span>
             </div>
@@ -63,38 +67,35 @@
                 <p id="example1"></p>
                 <p id="example2"></p>
                 <p id="example3"></p>
+                <p id="attribute1"></p>
             </div>
-            <!-- <div class="alert">
-                <p>
-                    <strong>Alert:</strong> Please fill in all the fields.
-                </p>
-            </div> -->
+
             <div class="button-container">
                 <button onclick="submitScript()">Build Script</button>
             </div>
-            
-        <!-- </form> -->
-                   <!-- Trigger/Open The Modal -->
-                   <button id="myBtn" hidden="True">Open Modal</button>
-
-                   <!-- The Modal -->
-                   <div id="myModal" class="modal">
-       
-                   <!-- Modal content -->
-                   <div class="modal-content">
-                       <span class="close">&times;</span>
-                       <p id="Popupwindow">Some text in the Modal..</p>
-                   </div>
-    </div>
-    <script src="Assets/script/script.js">
-
-    </script>
-    <script>
         
+            <!-- Trigger/Open The Modal -->
+            <button id="myBtn" hidden="True">Open Modal</button>
+
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+            <span class="close">&times;</span>
+
+            <span class="copy-button" onclick="copyText()">Copy</span>
+
+            <p id="Popupwindow">Some text in the Modal..</p>
+            </div>
+    </div>
+    <script src="Assets/script/Complexity.js"> </script>
+    <script src="Assets/script/script.js">    </script>
+    <script>
         // Define an array of options for the select dropdown
         var optionsComputer = [
             { value: "Get-blank", text: "" },
-            { value: "Service", text: "Service" },
+            { value: "ServiceStatus", text: "Service Status" },
             { value: "OS", text: "Operating System" },
             { value: "DNSCache", text: "DNS Cache" },
             { value: "HotFix", text: "HotFix" },
@@ -111,7 +112,7 @@
         var selectElementType = document.getElementById("script-type");
         // alert(selectElementType.value);
         var selectElementFunction = document.getElementById("script-function");
-        // alert(selectElementFunction.value);
+         // alert(selectElementFunction.value);
         // Loop through the options array and create option elements
         if(selectElementType.value === "computer"){
             for (var i = 0; i < optionsComputer.length; i++) {
@@ -128,38 +129,95 @@
                 selectElementFunction.appendChild(option);
             }
         }
-        // for (var i = 0; i < optionsComputer.length; i++) {
-        //     var option = document.createElement("option");
-        //     option.value = optionsComputer[i].value;
-        //     option.text = optionsComputer[i].text;
-        //     selectElement.appendChild(option);
-        // }
+
     </script>
     <script>
+        ////////////////////////////////////
+        // Submit the entries and
+        // Piece together the code fragments
+        ////////////////////////////////////
         function submitScript() {
             var scriptName = document.getElementById("script-name").value;
             var scriptFunction = document.getElementById("script-function").value;
             var scriptType = document.getElementById("script-type").value;
             var scriptDescription = document.getElementById("script-description").value;
             var scriptContent = document.getElementById("script-content").value; 
-            var scriptContent = scriptContent.replace(/\n/g, "<br>");       
-            var scriptExample1 = '"vhafar3dc1.v23.med.va.gov" | .\\'
-            var scriptExample2 = '(Get-ADDomainController -filter * -Server v23.med.va.gov).Hostname | .\\'
-            var scriptExample3 = '(Get-ADForest).Domains | %{ Get-ADDomainController -Filter * -Server $_ } | .\\'
-            var Begin = "Begin {<br>$start = Get-Date<br>$collectionTable=@()<br>$totalCount = 0<br>}";
-            var Process = "Process {<br>"+ scriptContent +"<br><br>$result<br><br>$totalCount++<br>$collectionTable += $result<br>}<br>";
-            var End = "End {<br>$end = Get-Date<br>$elapsedTime = $end - $start<br>Write-Host 'Total Count: ' $totalCount<br>Write-Host 'Elapsed Time: ' $elapsedTime<br>}";
+            var scriptContent = scriptContent.replace(/\n/g, "<br>");     
+            var scriptComplexity = document.querySelector('input[name="complexity"]:checked').value;      
+            var scriptExample1 = document.getElementById("example1").innerHTML;
+            var scriptExample2 = document.getElementById("example2").innerHTML;
+            var scriptExample3 = document.getElementById("example3").innerHTML;
+            ////////////////
+            // Basic Script
+            ///////////////
+            if (scriptComplexity === "Basic") {
+                var Begin = "Begin {<br>$start = Get-Date<br>$collectionTable=@()<br>$totalCount = 0<br>}";
+                var Invoke = "Invoke-command -computerName $computerName -ScriptBlock {"+ scriptContent +"}";
+                var Process = "Process {<br>$result = "+ Invoke +"<br><br>$result<br><br>$totalCount++<br>$collectionTable += $result<br>}<br>";
+                var End = "End {<br>$end = Get-Date<br>$elapsedTime = $end - $start<br>Write-Host 'Total Count: ' $totalCount<br>Write-Host 'Elapsed Time: ' $elapsedTime<br>}";
+                output = "<pre><code><# <br>.Synopsis<br>    " + scriptDescription + "<br>.Description<br>    " + scriptDescription + 
+                "<br>.Example<br>    " + scriptExample1+ "<br>.Example<br>" + scriptExample2 + "<br>.Example<br>" + scriptExample3 +"<br>#>" +
+                "<br><br> param ( <br> [parameter(Mandatory=$false,ValueFromPipeline=$true)] <br> [string]$ComputerName = $env:COMPUTERNAME <br> ) <br> <br> " +
+                Begin + "<br> " + 
+                Process + "<br> " + 
+                End + "<br></code></pre>"
 
-            output = "<# <br>.Synopsis<br>    " + scriptDescription + "<br>.Description<br>    " + scriptDescription + 
-            "<br>.Example<br>    " + scriptExample1+ scriptName + "<br>.Example<br>" + scriptExample2 + scriptName + "<br>.Example<br>" + scriptExample3 + scriptName+"<br>#>" +
-            "<br><br> param ( <br> [parameter(Mandatory=$false,ValueFromPipeline=$true)] <br> [string]$ComputerName = $env:COMPUTERNAME <br> ) <br> <br> " +
-            Begin + "<br> " + 
-            Process + "<br> " + 
-            End + "<br> "
-            //output = "hello world"
+                output = output.replace(/<br>/g, "\n");
+                
+            }else if (scriptComplexity === "Intermediate") {    
+                output = "hello world"
+            }else if (scriptComplexity === "Advanced") {
+                output = "hello world"
+            /////////////////////////
+            // Multi-Threaded Script
+            ////////////////////////
+            }else if (scriptComplexity === "Multi-Threaded") {
+                var theAttribute = document.getElementById("attribute1").innerHTML
+                var theScriptBlock = scriptContent.replace(/<br>/g, "\n");
+                // var theScriptBlock = scriptContent;
+                var theparam = "param ( <br> [parameter(Mandatory=$false,ValueFromPipeline=$true)] <br> [string[]]$ComputerNames,<br>[string]$DomainName='',<br>[string]$inputFile='' <br> )"
+                var theFunction = "<br>$getInfo = {<br>  param(<br>  [string]$ComputerName <br> ) <br> function CheckSystem ($ComputerName){<br>" +
+                    "$compObj = Invoke-command -computerName $computerName -ScriptBlock {"+ theScriptBlock+"}<br>" +
+                    "$objComputer  = New-Object psobject -Property @{Name = $computerName;"+theAttribute+" = $compObj."+theAttribute+"}<br>" +
+                    "Return $objComputer<br>" +
+                    "}<br>" +
+                    "CheckSystem $ComputerName<br>" +
+                    "}<br><br>" 
+                var startJob = "foreach ($computerName in $computerNames) {<br>" +
+                    "start-job -name $computerName -ScriptBlock $getInfo -argumentlist $computerName <br>" +
+                    "}<br><br>" 
+                var theWhile = "<br> $runningcount = (get-job | where state -eq running).count <br>"+
+                    "while ($runningcount -gt 0) {<br>" +
+                    "start-sleep -seconds 5<br>" +
+                    "$runningcount = (get-job | where state -eq running).count<br>" +
+                    "}<br><br>"
+                var theOutPut = "# Output"+
+                "<br>write-host 'Total Count: ' $Cnt"+
+                "<br>$end = Get-Date<br>"+
+                "<br>$elapsedTime = $end - $start<br>"+
+                "Write-Host 'Total Count: ' $totalCount"+
+                "Write-Host 'Elapsed Time: ' $elapsedTime"+
+                "<br>$endResult = get-job | Receive-Job -Force -Wait "+
+                "<br>$endResult | ogv"+
+                "<br>get-job | remove-job -Force"
+
+                output = "<pre><code><# <br>.Synopsis<br>" + scriptDescription + "<br>.Description<br>    " + scriptDescription + 
+                "<br>.Example<br> " + scriptExample1+ "<br>.Example<br>" + scriptExample2 + "<br>.Example<br>" + scriptExample3 + "<br>#><br>" +
+                theparam + theFunction + "<br> $start = Get-Date <br>" +
+                "if($DomainName -ne ''){$computerNames = (Get-ADDomainController -filter * -Server $DomainName).Hostname}<br>"+
+                "if($inputFile -ne ''){$computerNames = gc $inputFile}<br>"+
+                startJob + theWhile + theOutPut + "</code></pre>"
+
+                output = output.replace(/<br>/g, "\n");
+
+            }    
             document.getElementById("Popupwindow").innerHTML = output
             modal.style.display = "block";
-        
+            modal.style.fontSize = "1.25em";
+
+            hljs.initHighlightingOnLoad(); 
+            // class=language-powershell
+            // { language: 'powershell' }
         } 
         
         // Get the modal
@@ -208,7 +266,7 @@
                     // Define an array of options for the select dropdown
         var optionsComputer = [
             { value: "Get-blank", text: "" },
-            { value: "Service", text: "Service" },
+            { value: "ServiceStatus", text: "Service Status" },
             { value: "OS", text: "Operating System" },
             { value: "DNSCache", text: "DNS Cache" },
             { value: "HotFix", text: "HotFix" },
@@ -249,34 +307,36 @@
             // alert("Selection changed");
             // alert(scriptTypeElement.value);
             var scriptFunction = document.getElementById("script-function").value;
-            if (scriptFunction === "Service") {
-                document.getElementById("script-content").value = "\n" + 
-                "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-Service}"+
-                "\n#$result = Invoke-command -computerName $computerName -ScriptBlock {Get-Service 'DNS' | Sort-Object status}"+
-                "\n#$result = Invoke-command -computerName $computerName -ScriptBlock {Get-Service -DisplayName 'DNS' | Stop-Service}"+
-                "\n#$result = Invoke-command -computerName $computerName -ScriptBlock {start-service -name 'DNS'}";
+            if (scriptFunction === "ServiceStatus") {
+                document.getElementById("script-content").value = "Get-Service 'DNS' | Sort-Object status"
+                // "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-Service}"+
+                // "\n#$result = Invoke-command -computerName $computerName -ScriptBlock {Get-Service 'DNS' | Sort-Object status}"+
+                // "\n#$result = Invoke-command -computerName $computerName -ScriptBlock {Get-Service -DisplayName 'DNS' | Stop-Service}"+
+                // "\n#$result = Invoke-command -computerName $computerName -ScriptBlock {start-service -name 'DNS'}";
                 document.getElementById("script-description").value = scriptFunction;
                 scriptName = "Get-Computer"+scriptFunction+".ps1";
                 document.getElementById("script-name").value = "Get-Computer"+scriptFunction+".ps1";
                 document.getElementById("example1").innerHTML = "Example 1: 'vhafar3dc1.v23.med.va.gov' | .\\"+scriptName;
                 document.getElementById("example2").innerHTML = "Example 2: (Get-ADDomainController -filter * -Server v23.med.va.gov).Hostname | .\\"+scriptName;
                 document.getElementById("example3").innerHTML = "Example 3: (Get-ADForest).Domains | %{ Get-ADDomainController -Filter * -Server $_ } | .\\"+scriptName;
+                document.getElementById("attribute1").innerHTML = "Status";
 
             }else if (scriptFunction === "OS") {
-                document.getElementById("script-content").value = "\n"+
-                "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-ComputerInfo -Property *version}";
+                document.getElementById("script-content").value = "Get-ComputerInfo -Property OsVersion";
+                // "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-ComputerInfo -Property *version}";
                 document.getElementById("script-description").value = scriptFunction;
                 scriptName = "Get-Computer"+scriptFunction+".ps1";
                 document.getElementById("script-name").value = "Get-Computer"+scriptFunction+".ps1";
                 document.getElementById("example1").innerHTML = "Example 1: 'vhafar3dc1.v23.med.va.gov' | .\\"+scriptName;
                 document.getElementById("example2").innerHTML = "Example 2: (Get-ADDomainController -filter * -Server v23.med.va.gov).Hostname | .\\"+scriptName;
                 document.getElementById("example3").innerHTML = "Example 3: (Get-ADForest).Domains | %{ Get-ADDomainController -Filter * -Server $_ } | .\\"+scriptName;
+                document.getElementById("attribute1").innerHTML = "OsVersion";
 
             }else if (scriptFunction === "DNSCache") {
-                document.getElementById("script-content").value ="\n" + 
-                "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-DnsServerCache}" +
-                "\n#$result = Invoke-command -computerName $computerName -ScriptBlock {Show-DnsServerCache}" +
-                "\n#$result = Invoke-command -computerName $computerName -ScriptBlock {Clear-DnsServerCache -Force}";
+                document.getElementById("script-content").value ="Clear-DnsServerCache -Force" ;
+                // "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-DnsServerCache}" +
+                // "\n#$result = Invoke-command -computerName $computerName -ScriptBlock {Show-DnsServerCache}" +
+                // "\n#$result = Invoke-command -computerName $computerName -ScriptBlock {Clear-DnsServerCache -Force}";
                 document.getElementById("script-description").value = scriptFunction;
                 scriptName = "Get-Computer"+scriptFunction+".ps1";
                 document.getElementById("script-name").value = "Get-Computer"+scriptFunction+".ps1";
@@ -286,8 +346,7 @@
 
 
             }else if (scriptFunction === "HotFix") {
-                document.getElementById("script-content").value = "\n" + 
-                "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-HotFix}";
+                document.getElementById("script-content").value = "Get-HotFix";
                 document.getElementById("script-description").value = scriptFunction;
                 scriptName = "Get-Computer"+scriptFunction+".ps1";
                 document.getElementById("script-name").value = "Get-Computer"+scriptFunction+".ps1";
@@ -296,55 +355,57 @@
                 document.getElementById("example3").innerHTML = "Example 3: (Get-ADForest).Domains | %{ Get-ADDomainController -Filter * -Server $_ } | .\\"+scriptName;
 
             }else if (scriptFunction === "TimeZone") {
-                document.getElementById("script-content").value = "\n" + 
-                "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-TimeZone}";
+                document.getElementById("script-content").value = "Get-TimeZone" ;
+                // "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-TimeZone}";
                 document.getElementById("script-description").value = scriptFunction;
                 scriptName = "Get-Computer"+scriptFunction+".ps1";
                 document.getElementById("script-name").value = "Get-Computer"+scriptFunction+".ps1";
                 document.getElementById("example1").innerHTML = "Example 1: 'vhafar3dc1.v23.med.va.gov' | .\\"+scriptName;
                 document.getElementById("example2").innerHTML = "Example 2: (Get-ADDomainController -filter * -Server v23.med.va.gov).Hostname | .\\"+scriptName;
                 document.getElementById("example3").innerHTML = "Example 3: (Get-ADForest).Domains | %{ Get-ADDomainController -Filter * -Server $_ } | .\\"+scriptName;
+                document.getElementById("attribute1").innerHTML = "DisplayName";
 
 
             }else if (scriptFunction === "Memory") {
-                document.getElementById("script-content").value = "\n" + 
-                "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-ComputerInfo -Property *memory}";
+                document.getElementById("script-content").value = "Get-ComputerInfo -Property *memory"  
+                // "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-ComputerInfo -Property *memory}";
                 document.getElementById("script-description").value = scriptFunction;
                 scriptName = "Get-Computer"+scriptFunction+".ps1";
                 document.getElementById("script-name").value = "Get-Computer"+scriptFunction+".ps1";
                 document.getElementById("example1").innerHTML = "Example 1: 'vhafar3dc1.v23.med.va.gov' | .\\"+scriptName;
                 document.getElementById("example2").innerHTML = "Example 2: (Get-ADDomainController -filter * -Server v23.med.va.gov).Hostname | .\\"+scriptName;
                 document.getElementById("example3").innerHTML = "Example 3: (Get-ADForest).Domains | %{ Get-ADDomainController -Filter * -Server $_ } | .\\"+scriptName;
+                document.getElementById("attribute1").innerHTML = "CsTotalPhysicalMemory"
 
             }else if (scriptFunction === "Properties") {
                 document.getElementById("script-content").value = "\n" + 
-                "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-ADUser -Identity $env:USERNAME -Properties *}";
+                "$result = Get-ADUser -Identity $env:USERNAME -Properties *";
                 document.getElementById("script-description").value = scriptFunction;
                 scriptName = "Get-User"+scriptFunction+".ps1";
                 document.getElementById("script-name").value = "Get-User"+scriptFunction+".ps1";
                 document.getElementById("example1").innerHTML = "Example 1: 'vhafarpfaup' | .\\"+scriptName;
-                document.getElementById("example2").innerHTML = "Example 2: (Get-ADDomainController -filter * -Server v23.med.va.gov).Hostname | .\\"+scriptName;
-                document.getElementById("example3").innerHTML = "Example 3: (Get-ADForest).Domains | %{ Get-ADDomainController -Filter * -Server $_ } | .\\"+scriptName;
+                document.getElementById("example2").innerHTML = "Example 2: 'vhafarpfaup','vhaisastuars' | .\\"+scriptName;
+                document.getElementById("example3").innerHTML = "Example 3:  .\\"+scriptName + ' -infile FileName.txt';
 
             }else if (scriptFunction === "Email") {
                 document.getElementById("script-content").value = "\n" + 
-                "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-ADUser -Identity $env:USERNAME -Properties * | Select-Object -ExpandProperty EmailAddress}";
+                "$result = Get-ADUser -Identity $env:USERNAME -Properties * | Select-Object -ExpandProperty EmailAddress";
                 document.getElementById("script-description").value = scriptFunction;
                 scriptName = "Get-User"+scriptFunction+".ps1";
                 document.getElementById("script-name").value = "Get-User"+scriptFunction+".ps1";
                 document.getElementById("example1").innerHTML = "Example 1: 'vhafarpfaup' | .\\"+scriptName;
-                document.getElementById("example2").innerHTML = "Example 2: (Get-ADDomainController -filter * -Server v23.med.va.gov).Hostname | .\\"+scriptName;
-                document.getElementById("example3").innerHTML = "Example 3: (Get-ADForest).Domains | %{ Get-ADDomainController -Filter * -Server $_ } | .\\"+scriptName;
+                document.getElementById("example2").innerHTML = "Example 2: 'vhafarpfaup','vhaisastuars' | .\\"+scriptName;
+                document.getElementById("example3").innerHTML = "Example 3:  .\\"+scriptName + ' -infile FileName.txt';
 
             }else if (scriptFunction === "DirectReports") {
                 document.getElementById("script-content").value = "\n" + 
-                "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-ADUser -Identity $env:USERNAME -Properties * | Select-Object -ExpandProperty DirectReports}";
+                "$result = Get-ADUser -Identity $env:USERNAME -Properties * | Select-Object -ExpandProperty DirectReports";
                 document.getElementById("script-description").value = scriptFunction;
                 scriptName = "Get-User"+scriptFunction+".ps1";
                 document.getElementById("script-name").value = "Get-User"+scriptFunction+".ps1";
                 document.getElementById("example1").innerHTML = "Example 1: 'vhafarpfaup' | .\\"+scriptName;
-                document.getElementById("example2").innerHTML = "Example 2: (Get-ADDomainController -filter * -Server v23.med.va.gov).Hostname | .\\"+scriptName;
-                document.getElementById("example3").innerHTML = "Example 3: (Get-ADForest).Domains | %{ Get-ADDomainController -Filter * -Server $_ } | .\\"+scriptName;
+                document.getElementById("example2").innerHTML = "Example 2: 'vhafarpfaup','vhaisastuars' | .\\"+scriptName;
+                document.getElementById("example3").innerHTML = "Example 3:  .\\"+scriptName + ' -infile FileName.txt';
 
             }   
             
@@ -353,6 +414,21 @@
 
 
    </script>
+    
+<script>
+    function copyText() {
+
+        /* Copy text into clipboard */
+        // var thetext = document.getElementById("script-content").value
+        var thetext = document.getElementById("Popupwindow").innerText
+        //alert(thetext)
+        navigator.clipboard.writeText(thetext)
+    }
+</script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+         hljs.initHighlightingOnLoad();     
+    </script>
 </body>
 
 </html>

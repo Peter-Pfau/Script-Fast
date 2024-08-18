@@ -33,7 +33,27 @@ border: 1px solid #888;
 width: 80%;
 border-radius: 10px;
 }
+/* Copy Button */
+.copy-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    position: relative
+}
 
+.copy-button:hover {
+    background-color: #7ede83;
+}
 /* The Close Button */
 .close {
 color: #aaaaaa;

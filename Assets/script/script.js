@@ -1,49 +1,43 @@
-function submitScript() {
-    var scriptName = document.getElementById("script-name").value;
-    var scriptType = document.getElementById("script-type").value;
-    var scriptDescription = document.getElementById("script-description").value;
-    var scriptExample = document.getElementById("script-example").value;
-    var scriptCode = document.getElementById("script-code").value;
-    var Begin = "Begin {<br>$global:start = Get-Date<br>$global:collectionTable=@()<br>$global:totalCount = 0<br>}";
-    var Process = "Process {<br>"+ scriptCode +"<br><br>$global:totalCount++<br>$global:collectionTable += $PSItem<br>}<br>";
-    var End = "End {<br>$global:end = Get-Date<br>$global:elapsedTime = $global:end - $global:start<br>Write-Host 'Total Count: ' $global:totalCount<br>Write-Host 'Elapsed Time: ' $global:elapsedTime<br>}";
-    var output = document.getElementById("output");
-    // output.innerHTML = "Script Name: " + scriptName + "<br>Script Type: " + scriptType + "<br>Script Description: " + scriptDescription + "<br>Script Code: " + scriptCode;
-    output = "<# <br>.Synopsis<br>    " + scriptDescription + "<br>.Description<br>    " + scriptDescription + "<br>.Example<br>    " + scriptExample + scriptName+"<br>#>" +
-    "<br> param ( <br> [parameter(Mandatory=$false,ValueFromPipeline=$true)] <br> [string]$ComputerName = $env:COMPUTERNAME <br> ) <br> <br> " +
-    Begin + "<br> " + 
-    Process + "<br> " + 
-    End + "<br> "
-    document.getElementById("Popupwindow").innerHTML = output
-    modal.style.display = "block";
+// Get the <pre> element
+const preTag = document.getElementById("myPreTag");
 
-} 
 
-    // Get the modal
-    var modal = document.getElementById("myModal");
+// Create a copy button element
+const copyButton = document.createElement("span");
+copyButton.innerText = "Copy";
+copyButton.classList.add("copy-button");
 
-    // Get the button that opens the modal
-    var btn = document.getElementById("myBtn");
+// Append the copy button to the <pre> tag
+preTag.appendChild(copyButton);
 
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
 
-    // When the user clicks the button, open the modal 
-    btn.onclick = function() {
-    modal.style.display = "block";
-    output.innerHTML = ""
-    }
+// Add click event listener to the copy button
+copyButton.addEventListener("click", () => {
+  // Hide the copy button temporarily
+  copyButton.style.display = "none";
 
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-    modal.style.display = "none";
-    output.innerHTML = ""
-    }
+  // Create a range and select the text inside the <pre> tag
+  const range = document.createRange();
+  range.selectNode(preTag);
+  window.getSelection().removeAllRanges();
+  window.getSelection().addRange(range);
 
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-        output.innerHTML = ""
-    }
-}
+  try {
+    // Copy the selected text to the clipboard
+    document.execCommand("copy");
+
+    // Alert the user that the text has been copied
+    copyButton.innerText = "Copied!";
+    setTimeout(function(){
+      copyButton.innerText = "Copy";
+    }, 2000);
+  } catch (err) {
+    console.error("Unable to copy text:", err);
+  } finally {
+    // Show the copy button again
+    copyButton.style.display = "inline";
+
+    // Deselect the text
+    window.getSelection().removeAllRanges();
+  }
+});

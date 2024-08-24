@@ -4,8 +4,8 @@
     <!-- https://www.youtube.com/watch?v=GTSNkuKn5ls -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="Assets/css/main.css">
-    <link rel="stylesheet" href="Assets/css/modal.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/modal.css">
     <!-- highlight.js Syntax Highlight -->
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"> -->
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css"> -->
@@ -56,9 +56,9 @@
                     <label for="Basic">Basic</label>
                     <input type="radio" name="complexity" id="Intermediate" value="Intermediate">  
                     <label for="Intermediate">Intermediate</label>
-                    <input type="radio" name="complexity" id="Advanced" value="Advanced">
+                    <input type="radio" name="complexity" id="Advanced" value="Advanced" onclick="getCommentBasedHelp()">
                     <label for="Advanced">Advanced</label>
-                    <input type="radio" name="complexity" id="Multi-Threaded" value="Multi-Threaded">
+                    <input type="radio" name="complexity" id="Multi-Threaded" value="Multi-Threaded" >
                     <label for="Multi-Threaded">Multi-Threaded</label>
                     
                 </span>
@@ -69,7 +69,14 @@
                 <p id="example3"></p>
                 <p id="attribute1"></p>
             </div>
+<div>
+    <textarea name="script-content-commentBasedHelp" id="script-content-commentBasedHelp" cols="70" rows="5" style="display: none"></textarea> 
+    <textarea name="script-content-parameters" id="script-content-parameters" cols="70" rows="5" style="display: none"></textarea> 
+    <textarea name="script-content-begin" id="script-content-begin" cols="70" rows="5" style="display: none"></textarea> 
+    <textarea name="script-content-process" id="script-content-process" cols="70" rows="5" style="display: none"></textarea> 
+    <textarea name="script-content-end" id="script-content-end" cols="70" rows="5" style="display: none"></textarea> 
 
+</div>
             <div class="button-container">
                 <button onclick="submitScript()">Build Script</button>
             </div>
@@ -88,6 +95,7 @@
 
             <p id="Popupwindow">Some text in the Modal..</p>
             </div>
+
     </div>
     <script src="Assets/script/Complexity.js"> </script>
     <script src="Assets/script/script.js">    </script>
@@ -97,10 +105,12 @@
             { value: "Get-blank", text: "" },
             { value: "ServiceStatus", text: "Service Status" },
             { value: "OS", text: "Operating System" },
+            { value: "IP", text: "IP Address" },
             { value: "DNSCache", text: "DNS Cache" },
             { value: "HotFix", text: "HotFix" },
             { value: "TimeZone", text: "Get-TimeZone" },
-            { value: "Memory", text: "Memory" }
+            { value: "Memory", text: "Memory" },
+            { value: "Events_Logon", text: "Events_Logon" }
         ];
         var optionsUser = [
             { value: "Get-blank", text: "" },
@@ -141,8 +151,10 @@
             var scriptFunction = document.getElementById("script-function").value;
             var scriptType = document.getElementById("script-type").value;
             var scriptDescription = document.getElementById("script-description").value;
+            //**1 Get the textarea .value and replace \n with <br>
             var scriptContent = document.getElementById("script-content").value; 
             var scriptContent = scriptContent.replace(/\n/g, "<br>");     
+
             var scriptComplexity = document.querySelector('input[name="complexity"]:checked').value;      
             var scriptExample1 = document.getElementById("example1").innerHTML;
             var scriptExample2 = document.getElementById("example2").innerHTML;
@@ -151,23 +163,41 @@
             // Basic Script
             ///////////////
             if (scriptComplexity === "Basic") {
+                //**2 Build string variables with <br>
                 var Begin = "Begin {<br>$start = Get-Date<br>$collectionTable=@()<br>$totalCount = 0<br>}";
                 var Invoke = "Invoke-command -computerName $computerName -ScriptBlock {"+ scriptContent +"}";
                 var Process = "Process {<br>$result = "+ Invoke +"<br><br>$result<br><br>$totalCount++<br>$collectionTable += $result<br>}<br>";
                 var End = "End {<br>$end = Get-Date<br>$elapsedTime = $end - $start<br>Write-Host 'Total Count: ' $totalCount<br>Write-Host 'Elapsed Time: ' $elapsedTime<br>}";
+                //**3 Build output string with + and terminate with <br> 
                 output = "<pre><code><# <br>.Synopsis<br>    " + scriptDescription + "<br>.Description<br>    " + scriptDescription + 
                 "<br>.Example<br>    " + scriptExample1+ "<br>.Example<br>" + scriptExample2 + "<br>.Example<br>" + scriptExample3 +"<br>#>" +
                 "<br><br> param ( <br> [parameter(Mandatory=$false,ValueFromPipeline=$true)] <br> [string]$ComputerName = $env:COMPUTERNAME <br> ) <br> <br> " +
                 Begin + "<br> " + 
                 Process + "<br> " + 
                 End + "<br></code></pre>"
-
+                //**4 Replace <br> with \n
                 output = output.replace(/<br>/g, "\n");
                 
-            }else if (scriptComplexity === "Intermediate") {    
+            }else if (scriptComplexity === "Intermediate") {   
                 output = "hello world"
+            /////////////////////////
+            // Advanced Script
+            ////////////////////////
             }else if (scriptComplexity === "Advanced") {
-                output = "hello world"
+                //**1 Get the textarea .value and replace \n with <br>
+                var commentBasedHelp = document.getElementById("script-content-commentBasedHelp").value;
+                var commentBasedHelp = commentBasedHelp.replace(/\n/g, "<br>");     
+                var parameters = document.getElementById("script-content-parameters").value;
+                var parameters = parameters.replace(/\n/g, "<br>");     
+                var begin = document.getElementById("script-content-begin").value;
+                var begin = begin.replace(/\n/g, "<br>");     
+                var process = document.getElementById("script-content-process").value;
+                var end = document.getElementById("script-content-end").value;
+
+                // Add the <pre><code> tabs for the Modal
+                output = "<pre><code>" + commentBasedHelp + parameters + begin + process + end + "<br></code></pre>"
+                output = output.replace(/<br>/g, "\n");
+
             /////////////////////////
             // Multi-Threaded Script
             ////////////////////////
@@ -229,11 +259,23 @@
         // Get the <span> element that closes the modal
         var span = document.getElementsByClassName("close")[0];
 
+        // // Get the <span> element that closes the modal
+        // var copybtn = document.getElementsByClassName("copy-button");
+
         // When the user clicks the button, open the modal 
         btn.onclick = function() {
         modal.style.display = "block";
         output.innerHTML = ""
         }
+
+        // // Alert the user that the text has been copied
+        // copybtn.onclick = function() {
+        //     copybtn.innerHTML = "Copied!";
+        // }
+
+        // setTimeout(function(){
+        //     document.getElementByclass(copy-button).innerText = "Copy";
+        // }, 2000);
 
         // When the user clicks on <span> (x), close the modal
         span.onclick = function() {
@@ -268,10 +310,12 @@
             { value: "Get-blank", text: "" },
             { value: "ServiceStatus", text: "Service Status" },
             { value: "OS", text: "Operating System" },
+            { value: "IP", text: "IP Address" },
             { value: "DNSCache", text: "DNS Cache" },
             { value: "HotFix", text: "HotFix" },
             { value: "TimeZone", text: "Get-TimeZone" },
-            { value: "Memory", text: "Memory" }
+            { value: "Memory", text: "Memory" },
+            { value: "Events_Logon", text: "Events_Logon" }
         ];
         var optionsUser = [
             { value: "Get-blank", text: "" },
@@ -332,6 +376,17 @@
                 document.getElementById("example3").innerHTML = "Example 3: (Get-ADForest).Domains | %{ Get-ADDomainController -Filter * -Server $_ } | .\\"+scriptName;
                 document.getElementById("attribute1").innerHTML = "OsVersion";
 
+            }else if (scriptFunction === "IP") {
+                document.getElementById("script-content").value = "$result = (Resolve-DnsName -Name $ComputerName).IPAddress";
+                // "$result = (Resolve-DnsName -Name $ComputerName).IPAddress}";
+                document.getElementById("script-description").value = scriptFunction;
+                scriptName = "Get-Computer"+scriptFunction+".ps1";
+                document.getElementById("script-name").value = "Get-Computer"+scriptFunction+".ps1";
+                document.getElementById("example1").innerHTML = "Example 1: 'vhafar3dc1.v23.med.va.gov' | .\\"+scriptName;
+                document.getElementById("example2").innerHTML = "Example 2: (Get-ADDomainController -filter * -Server v23.med.va.gov).Hostname | .\\"+scriptName;
+                document.getElementById("example3").innerHTML = "Example 3: (Get-ADForest).Domains | %{ Get-ADDomainController -Filter * -Server $_ } | .\\"+scriptName;
+                document.getElementById("attribute1").innerHTML = "OsVersion";
+
             }else if (scriptFunction === "DNSCache") {
                 document.getElementById("script-content").value ="Clear-DnsServerCache -Force" ;
                 // "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-DnsServerCache}" +
@@ -376,6 +431,23 @@
                 document.getElementById("example2").innerHTML = "Example 2: (Get-ADDomainController -filter * -Server v23.med.va.gov).Hostname | .\\"+scriptName;
                 document.getElementById("example3").innerHTML = "Example 3: (Get-ADForest).Domains | %{ Get-ADDomainController -Filter * -Server $_ } | .\\"+scriptName;
                 document.getElementById("attribute1").innerHTML = "CsTotalPhysicalMemory"
+            
+            }else if (scriptFunction === "Events_Logon") {
+                document.getElementById("script-content").value = "#############################"+
+                "\n # Authentications in 1 Second"+
+                "\n ################"+
+                "\n $theEnd = (Get-Date).ToString('MM/dd/yyyy hh:mm:ss tt')"+
+                "\n $theStart = ([datetime]$theEnd).AddSeconds(-1).ToString('MM/dd/yyyy hh:mm:ss tt')"+
+                "\n $result = Invoke-command -computerName $computerName -ScriptBlock {(Get-WinEvent -FilterHashtable @{"+
+                "\n     logname='Security';id=4624;StartTime=$theStart;EndTime=$theEnd"+
+                "\n }).count}"  
+                document.getElementById("script-description").value = scriptFunction;
+                scriptName = "Get-Computer"+scriptFunction+".ps1";
+                document.getElementById("script-name").value = "Get-Computer"+scriptFunction+".ps1";
+                document.getElementById("example1").innerHTML = "Example 1: 'vhafar3dc1.v23.med.va.gov' | .\\"+scriptName;
+                document.getElementById("example2").innerHTML = "Example 2: (Get-ADDomainController -filter * -Server v23.med.va.gov).Hostname | .\\"+scriptName;
+                document.getElementById("example3").innerHTML = "Example 3: (Get-ADForest).Domains | %{ Get-ADDomainController -Filter * -Server $_ } | .\\"+scriptName;
+
 
             }else if (scriptFunction === "Properties") {
                 document.getElementById("script-content").value = "\n" + 
@@ -421,8 +493,154 @@
         /* Copy text into clipboard */
         // var thetext = document.getElementById("script-content").value
         var thetext = document.getElementById("Popupwindow").innerText
-        //alert(thetext)
+        alert(thetext)
         navigator.clipboard.writeText(thetext)
+
+        // var cpbtn = document.getElementByclass("copy-button")
+        // // Alert the user that the text has been copied
+        // document.getElementByclass("copy-button").innerHTML = "Copied!";
+        // cpbtn.innerText = "Copied!";
+        // cpbtn.value = "copied!";
+
+    }
+</script>
+<script>
+    async function getCommentBasedHelp() {
+        const response = await fetch('./assets/snippets/commentBasedHelp.json',{                     
+        method: 'GET',
+        headers: {
+                'Content-Type': "application/json; charset=UTF-8",
+                "Access-Control-Allow-Headers":"*",
+                "Access-Control-Allow-Origin":"*",
+                "Access-Control-Request-Headers":"authorization"
+            }
+        //mode: "no-cors",  //cross origin resource sharing 
+        });
+        const json = await response.json();
+        console.log(json); 
+        var Array = json;
+        let length =  Array.length;
+        // alert(length);
+        // var commentBasedHelp  = "<br>";
+        var commentBasedHelp  = "\n";
+        // Loop through the options array and build scripttions
+        for (var i = 0; i < Array.length; i++) {
+            var commentBasedHelp  = commentBasedHelp  + Array[i].Line;
+        }
+        // var commentBasedHelp  = commentBasedHelp.replace(/<br>/g, "\n");
+        // alert(commentBasedHelp);
+        document.getElementById("script-content-commentBasedHelp").value = commentBasedHelp;  
+        getParameters();
+    }
+
+    async function getParameters() {
+        const response = await fetch('./assets/snippets/parameters.json',{                     
+        method: 'GET',
+        headers: {
+                'Content-Type': "application/json; charset=UTF-8",
+                "Access-Control-Allow-Headers":"*",
+                "Access-Control-Allow-Origin":"*",
+                "Access-Control-Request-Headers":"authorization"
+            }
+        //mode: "no-cors",  //cross origin resource sharing 
+        });
+        const json = await response.json();
+        console.log(json); 
+        var Array = json;
+        let length =  Array.length;
+        // alert(length);
+        var parameters  = "\n";
+        // Loop through the options array and build scripttions
+        for (var i = 0; i < Array.length; i++) {
+            var parameters  = parameters  + Array[i].Line;
+        }
+        // var parameters  = parameters.replace(/<br>/g, "\n");
+        // alert(parameters);
+        document.getElementById("script-content-parameters").value = parameters;  
+        getBegin();
+    }
+
+    async function getBegin() {
+        const response = await fetch('./assets/snippets/begin.json',{                     
+        method: 'GET',
+        headers: {
+                'Content-Type': "application/json; charset=UTF-8",
+                "Access-Control-Allow-Headers":"*",
+                "Access-Control-Allow-Origin":"*",
+                "Access-Control-Request-Headers":"authorization"
+            }
+        //mode: "no-cors",  //cross origin resource sharing 
+        });
+        const json = await response.json();
+        console.log(json); 
+        var Array = json;
+        let length =  Array.length;
+        // alert(length);
+        var begin  = "\n";
+        // Loop through the options array and build scripttions
+        for (var i = 0; i < Array.length; i++) {
+            var begin  = begin  + Array[i].Line;
+        }
+        // var begin  = begin.replace(/<br>/g, "\n");
+        // alert(begin);
+        document.getElementById("script-content-begin").value = begin;  
+        getProcess();
+    }
+
+    async function getProcess() {
+        const response = await fetch('./assets/snippets/process.json',{                     
+        method: 'GET',
+        headers: {
+                'Content-Type': "application/json; charset=UTF-8",
+                "Access-Control-Allow-Headers":"*",
+                "Access-Control-Allow-Origin":"*",
+                "Access-Control-Request-Headers":"authorization"
+            }
+        //mode: "no-cors",  //cross origin resource sharing 
+        });
+        const json = await response.json();
+        console.log(json); 
+        var Array = json;
+        let length =  Array.length;
+        // alert(length);
+        var process  = "\n";
+        // Loop through the options array and build scripttions
+        for (var i = 0; i < Array.length; i++) {
+            var process  = process  + Array[i].Line;
+        }
+        // var process  = process.replace(/<br>/g, "\n");
+        // alert(process);
+        document.getElementById("script-content-process").value = process;  
+        getEnd();
+    }
+
+    async function getEnd() {
+        const response = await fetch('./assets/snippets/end.json',{                     
+        method: 'GET',
+        headers: {
+                'Content-Type': "application/json; charset=UTF-8",
+                "Access-Control-Allow-Headers":"*",
+                "Access-Control-Allow-Origin":"*",
+                "Access-Control-Request-Headers":"authorization"
+            }
+        //mode: "no-cors",  //cross origin resource sharing 
+        });
+        const json = await response.json();
+        console.log(json); 
+        var Array = json;
+        let length =  Array.length;
+        // alert(length);
+        var endCode = "\n";
+        // Loop through the options array and build script
+        for (var i = 0; i < Array.length; i++) {
+            // alert(Array[i].Line)
+            var endCode = endCode + Array[i].Line;
+        }
+        // var endCode = endCode.replace(/<br>/g, "\n");
+        // alert(endCode)
+        // var endCode = endCode.replace("<br>", "\n");
+        document.getElementById("script-content-end").innerHTML = endCode;
+        
     }
 </script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>

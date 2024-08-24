@@ -1,2 +1,2 @@
 # Script-Fast
-Build scripts without writing code.
+Script Builder for PowerShell Active Directory

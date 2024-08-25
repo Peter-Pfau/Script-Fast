@@ -12,37 +12,37 @@
         "Line": "[switch]$Report,\n"
     },
     {
-        "Line": "[string]$ReportPath = \\\"C:\\Scripts\\xx-xx\\Reports\\Report.xxx.html\\\",\n"
+        "Line": "[string]$ReportPath = \\'C:\\Scripts\\xx-xx\\Reports\\Report.xxx.html\\',\n"
     },
     {
-        "Line": "[string]$WebReport = \\\"reports//Report.xxx.html\\\",\n"
+        "Line": "[string]$WebReport = \\'reports//Report.xxx.html\\',\n"
     },
     {
-        "Line": "[string]$WebScript = \\\"Scripts:Report.xxx.html\\\",\n"
+        "Line": "[string]$WebScript = \\'Scripts:Report.xxx.html\\',\n"
     },
     {
-        "Line": "[string]$TheHeader = \\\"Title of Report\\\",\n"
+        "Line": "[string]$TheHeader = \\'Title of Report\\',\n"
     },
     {
-        "Line": "[string]$Org = \\\"OIT IO SS Authentication Services\\\",\n"
+        "Line": "[string]$Org = \\'OIT IO SS Authentication Services\\',\n"
     },
     {
-        "Line": "[string]$Org = \\\"OIT IO SS Authentication Services\\\",\n"
+        "Line": "[string]$Org = \\'OIT IO SS Authentication Services\\',\n"
     },
     {
-        "Line": "[string]$Service = \\\"The Service\\\",\n"
+        "Line": "[string]$Service = \\'The Service\\',\n"
     },
     {
         "Line": "# Images\n"
     },    
     {
-        "Line": "[string]$RelativeImage = \\\"../images/xxx.png\\\",                               # Relative Path Webpage Reports\n"
+        "Line": "[string]$RelativeImage = \\'../images/xxx.png\\',                               # Relative Path Webpage Reports\n"
     },    
     {
-        "Line": "[string]$DistinguishedImagePath = \\\"C:\/Scripts\/ATOMitigation-REEF\/Images\/\\\",  # Distinguished Email Attachment\n"
+        "Line": "[string]$DistinguishedImagePath = \\'C:\/Scripts\/ATOMitigation-REEF\/Images\/\\',  # Distinguished Email Attachment\n"
     },    
     {
-        "Line": "[string]$TheImageFileName = \\\"xxx.png\\\",                                      # Image File Name Email\n"
+        "Line": "[string]$TheImageFileName = \\'xxx.png\\',                                      # Image File Name Email\n"
     },    
     {
         "Line": "# Email\n"
@@ -51,13 +51,13 @@
         "Line": "[switch]$email,\n"
     },    
     {
-        "Line": "[string]$To = \\\"Peter.pfau@va.gov\\\",\n"
+        "Line": "[string]$To = \\'Peter.pfau@va.gov\\',\n"
     },    
     {
-        "Line": "[string]$From = \\\"Monitor@va.gov\\\",\n"
+        "Line": "[string]$From = \\'Monitor@va.gov\\',\n"
     },    
     {
-        "Line": "[string]$Subject = \\\"The Subject Report\\\",\n"
+        "Line": "[string]$Subject = \\'The Subject Report\\',\n"
     },    
     {
         "Line": " # Colors\n"
@@ -66,11 +66,11 @@
         "Line": "[switch]$TableWrap,\n"
     },    
     {
-        "Line": "[string]$THColor = \\\"lightgrey\\\",\n"
+        "Line": "[string]$THColor = \\'lightgrey\\',\n"
     },    {
-        "Line": "[string]$TableColor = \\\"#46A6FA\\\",\n"
+        "Line": "[string]$TableColor = \\'#46A6FA\\',\n"
     },    {
-        "Line": "[string]$NotesColor = \\\"#46A6FA\\\"\n"
+        "Line": "[string]$NotesColor = \\'#46A6FA\\'\n"
     },   
     {
         "Line": ")\n"

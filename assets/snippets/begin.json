@@ -4,14 +4,14 @@
     },
 
     {
-        "Line": "$start = Get-Date\n"
+        "Line": "   $start = Get-Date\n"
     },
 
     {
-        "Line": "$collectionTable=@()\n"
+        "Line": "   $collectionTable=@()\n"
     },
     {
-        "Line": "$totalCount = 0\n"
+        "Line": "   $totalCount = 0\n"
     },
     {
         "Line": "}\n"

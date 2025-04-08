@@ -6,22 +6,37 @@
     "Line": ".DESCRIPTION\n"
 },
 {
-    "Line": "What does it do?\n"
+    "Line": "   thedescription?\n"
 },
 {
     "Line": ".EXAMPLE\n"
 },
 {
-    "Line": "\\'HostName.v23.med.va.gov\\' | .\\Get-xxxxx.ps1\n"
+    "Line": "   example1?\n"
+},
+{
+    "Line": ".EXAMPLE\n"
+},
+{
+    "Line": "   example2?\n"
+},
+{
+    "Line": ".EXAMPLE\n"
+},
+{
+    "Line": "   example3?\n"
+},
+{
+    "Line": ".LINK\n   https://peter-pfau.github.io/YouCan-Code/\n"
 },
 {
     "Line": ".NOTES\n"
 },
 {
-    "Line": "Author: Peter Pfau - OIT IO SS Directory Services <VHAETMADTeam@va.gov>\n"
+    "Line": "   Author: Peter Pfau - OIT IO SS Directory Services <VHAETMADTeam@va.gov>\n"
 },
 {
-    "Line": "Date:   March 13, 2023 \n"
+    "Line": "   Date:   thedate? \n"
 },
 {
     "Line": "#>\n"

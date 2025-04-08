@@ -2,22 +2,23 @@
     {
         "Line": "PROCESS {\n"
     },
-
     {
-        "Line": "$result = (Resolve-DnsName -Name $ComputerName).IPAddress\n"
-    },
-
-    {
-        "Line": "$result\n"
+        "Line": "   foreach($computerName in $computerNames){\n"
     },
     {
-        "Line": "$totalCount++\n"
+        "Line": "       \n\tthescriptcontent?\n"
     },
     {
-        "Line": "$objComputer  = New-Object psobject -Property @{ComputerName = $computerName;IP = $result}\n"
+        "Line": "       \n\tthescriptcollection?\n"
     },
     {
-        "Line": "$collectionTable += $objComputer\n"
+        "Line": "       $result\n"
+    },
+    {
+        "Line": "       $totalCount++\n"
+    },
+    {
+        "Line": "   }\n"
     },
     {
         "Line": "}\n"

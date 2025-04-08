@@ -6,14 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/modal.css">
-    <!-- highlight.js Syntax Highlight -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"> -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css"> -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"> -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark-reasonable.min.css"> -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/qtcreator-dark.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/docco.css">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/devibeans.css"> -->
 
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <title>Script Fast</title>
@@ -48,7 +41,30 @@
                 </div>
                 <div class="input-area">
                     <label for="script-content">Script Content:</label>
-                    <textarea name="script-content" id="script-content" cols="70" rows="10" placeholder="Enter script content"></textarea>     
+                    <textarea name="script-content" id="script-content" cols="70" rows="7" placeholder="Enter script content"></textarea>     
+                </div>
+      
+                <div class="input-area">
+                    <label for="script-collection">Script Collection:</label>
+                    <textarea name="script-collection" id="script-collection" cols="70" rows="10" placeholder="Enter script collection"></textarea>     
+                </div>
+
+                <div class="input-box" style="display: flex; align-items: center; gap: 10px;">
+                    <label for="emoji-selector" style="margin: 0;">Select Emoji:</label>
+                    <select id="emoji-selector" style="flex: 1;">
+                        <option value="💻">💻 Laptop</option>
+                        <option value="🖥️">🖥️ Desktop Computer</option>
+                        <option value="📈">📈 Chart Increasing</option>
+                        <option value="📊">📊 Bar Chart</option>
+                        <option value="📉">📉 Chart Decreasing</option>
+                        <option value="👨🏽‍💻">👨🏽‍💻 Man Technologist</option>
+                        <option value="🛜">🛜 Wireless</option>
+                    </select>
+                </div>
+                <div class="input-box">
+                    <label>Emoji HTML Code:</label>
+                    <pre><code id="emoji-html-display" style="display: block; padding: 8px; background: #f5f5f5; border-radius: 4px;"></code></pre>
+                <button onclick="getEmojiHTML()">Get Emoji HTML</button>
                 </div>
                 <span class="Complexity-title">Complexity</span>
                 <span class="Complexity-category">
@@ -63,18 +79,26 @@
                     
                 </span>
             </div>
-            <div class="example" >
-                <p id="example1"></p>
+            <div class="example" style="display: none;">
+                <p id="example1" ></p>
                 <p id="example2"></p>
                 <p id="example3"></p>
                 <p id="attribute1"></p>
             </div>
+            <!-- <div class="input-box" style="display: flex; align-items: center; gap: 10px;"> -->
+                <a id="github-link" href="https://peter-pfau.github.io/YouCan-Code/" target="_blank" style="text-decoration: none; color: #000; font-size: 1.5em;">
+                    <span>🐙</span> <!-- GitHub emoji -->
+                </a>
+            <!-- </div> -->
 <div>
     <textarea name="script-content-commentBasedHelp" id="script-content-commentBasedHelp" cols="70" rows="5" style="display: none"></textarea> 
     <textarea name="script-content-parameters" id="script-content-parameters" cols="70" rows="5" style="display: none"></textarea> 
     <textarea name="script-content-begin" id="script-content-begin" cols="70" rows="5" style="display: none"></textarea> 
     <textarea name="script-content-process" id="script-content-process" cols="70" rows="5" style="display: none"></textarea> 
     <textarea name="script-content-end" id="script-content-end" cols="70" rows="5" style="display: none"></textarea> 
+    <textarea name="script-content-endAdvanced" id="script-content-endAdvanced" cols="70" rows="5" style="display: none"></textarea> 
+    <!-- Troubleshoot View textarea -->
+    <!-- <textarea name="script-content-endAdvanced" id="script-content-endAdvanced" cols="70" rows="5" ></textarea>  -->
 
 </div>
             <div class="button-container">
@@ -97,8 +121,9 @@
             </div>
 
     </div>
-    <script src="Assets/script/Complexity.js"> </script>
-    <script src="Assets/script/script.js">    </script>
+    <script src="assets/script/Complexity.js"> </script>
+    <script src="assets/script/script.js">    </script>
+    </script>
     <script>
         // Define an array of options for the select dropdown
         var optionsComputer = [
@@ -142,6 +167,40 @@
 
     </script>
     <script>
+        function getEmojiHTML() {
+    const emojiSelector = document.getElementById('emoji-selector');
+    const emojiHTMLDisplay = document.getElementById('emoji-html-display');
+    const selectedEmoji = emojiSelector.value;
+    const emojiHTML = `&#${selectedEmoji.codePointAt(0)};`;
+    alert(emojiHTML);
+    async function callParametersRoute() {
+        try {
+            const response = await fetch('/parameters', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ emojiHTML })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Server response:', data);
+            alert('Emoji HTML: ' + data.emojiHTML);
+        } catch (error) {
+            console.error('Error sending emoji HTML:', error);
+            alert('Error: ' + error.message);
+        }
+    }
+    callParametersRoute()
+    // emojiHTMLDisplay.textContent = emojiHTML;
+}
+       
+    </script>
+    <script>
         ////////////////////////////////////
         // Submit the entries and
         // Piece together the code fragments
@@ -151,9 +210,15 @@
             var scriptFunction = document.getElementById("script-function").value;
             var scriptType = document.getElementById("script-type").value;
             var scriptDescription = document.getElementById("script-description").value;
+            //
             //**1 Get the textarea .value and replace \n with <br>
             var scriptContent = document.getElementById("script-content").value; 
-            var scriptContent = scriptContent.replace(/\n/g, "<br>");     
+            var scriptContent = scriptContent.replace(/\n/g, "<br>");    
+
+            var scriptCollection = document.getElementById("script-collection").value; 
+            // /g = .replaceAll  
+            // replace \n Text with <br> HTML
+            var scriptCollection = scriptCollection.replace(/\n/g, "<br>");     
 
             var scriptComplexity = document.querySelector('input[name="complexity"]:checked').value;      
             var scriptExample1 = document.getElementById("example1").innerHTML;
@@ -165,8 +230,7 @@
             if (scriptComplexity === "Basic") {
                 //**2 Build string variables with <br>
                 var Begin = "Begin {<br>$start = Get-Date<br>$collectionTable=@()<br>$totalCount = 0<br>}";
-                var Invoke = "Invoke-command -computerName $computerName -ScriptBlock {"+ scriptContent +"}";
-                var Process = "Process {<br>$result = "+ Invoke +"<br><br>$result<br><br>$totalCount++<br>$collectionTable += $result<br>}<br>";
+                var Process = "Process {<br>" + scriptContent +"<br><br>$result<br><br>$totalCount++<br>$collectionTable += $result<br>}<br>";
                 var End = "End {<br>$end = Get-Date<br>$elapsedTime = $end - $start<br>Write-Host 'Total Count: ' $totalCount<br>Write-Host 'Elapsed Time: ' $elapsedTime<br>}";
                 //**3 Build output string with + and terminate with <br> 
                 output = "<pre><code><# <br>.Synopsis<br>    " + scriptDescription + "<br>.Description<br>    " + scriptDescription + 
@@ -179,11 +243,6 @@
                 output = output.replace(/<br>/g, "\n");
                 
             }else if (scriptComplexity === "Intermediate") {   
-                output = "hello world"
-            /////////////////////////
-            // Advanced Script
-            ////////////////////////
-            }else if (scriptComplexity === "Advanced") {
                 //**1 Get the textarea .value and replace \n with <br>
                 var commentBasedHelp = document.getElementById("script-content-commentBasedHelp").value;
                 var commentBasedHelp = commentBasedHelp.replace(/\n/g, "<br>");     
@@ -192,11 +251,86 @@
                 var begin = document.getElementById("script-content-begin").value;
                 var begin = begin.replace(/\n/g, "<br>");     
                 var process = document.getElementById("script-content-process").value;
+                var process = process.replace(/\n/g, "<br>");  
                 var end = document.getElementById("script-content-end").value;
 
                 // Add the <pre><code> tabs for the Modal
                 output = "<pre><code>" + commentBasedHelp + parameters + begin + process + end + "<br></code></pre>"
-                output = output.replace(/<br>/g, "\n");
+                output = output.replace(/<br>/g, "\n");  
+                output = output.replace("example1?", scriptExample1);
+                output = output.replace("example2?", scriptExample2);
+                output = output.replace("example3?", scriptExample3);
+                output = output.replace("thedescription?", scriptDescription);
+                const date = new Date();
+                output = output.replace("thedate?", date);
+                output = output.replace("theheader?", scriptType + " " + scriptFunction);
+                output = output.replace("theservice?", scriptDescription);
+                output = output.replace("thesubject?", scriptFunction);
+                output = output.replace("thescriptcontent?", scriptContent);
+                // alert(scriptCollection);
+                scriptCollection = scriptCollection.replace(/<br>/g, "\n");
+                output = output.replace("thescriptcollection?", scriptCollection);
+                // alert(output);
+                output = output.replace("theorg?", "OIT IO SS Authentication Services");
+                output = output.replace("Get-xxxxx.ps1", scriptName);
+             
+            /////////////////////////
+            // Advanced Script
+            ////////////////////////
+            }else if (scriptComplexity === "Advanced") {
+                var commentBasedHelp = document.getElementById("script-content-commentBasedHelp").value;
+
+                var commentBasedHelp = commentBasedHelp.replace(/\n/g, "<br>");     
+                var parameters = document.getElementById("script-content-parameters").value;
+                var parameters = parameters.replace(/\n/g, "<br>");     
+                var begin = document.getElementById("script-content-begin").value;
+                var begin = begin.replace(/\n/g, "<br>");     
+                var process = document.getElementById("script-content-process").value;
+                var process = process.replace(/\n/g, "<br>");  
+                var end = document.getElementById("script-content-endAdvanced").value;
+                var end = end.replaceAll('<', "&lt");
+                var end = end.replaceAll('>', "&gt");
+
+
+                // Add the <pre><code> tabs for the Modal
+                output = "<pre><code>" + commentBasedHelp + parameters + begin + process + end +  "<br></code></pre>"
+                // output = "<pre><code>" +  end +  "<br></code></pre>"
+                output = output.replace(/<br>/g, "\n");  
+                output = output.replace("example1?", scriptExample1);
+                output = output.replace("example2?", scriptExample2);
+                output = output.replace("example3?", scriptExample3);
+                output = output.replace("thedescription?", scriptDescription);
+                const date = new Date();
+                output = output.replace("thedate?", date);
+                output = output.replace("theheader?", scriptType + " " + scriptFunction);
+                output = output.replace("theservice?", scriptDescription);
+                output = output.replace("thesubject?", scriptFunction);
+                scriptContent = scriptContent.replace(/<br>/g, "\n");
+                output = output.replace("thescriptcontent?", scriptContent);
+                // alert(scriptCollection);
+                scriptCollection = scriptCollection.replace(/<br>/g, "\n");
+                // alert(scriptCollection);
+                output = output.replace("thescriptcollection?", scriptCollection);
+                output = output.replace("theorg?", "OIT IO SS Authentication Services");
+                output = output.replace("Get-xxxxx.ps1", scriptName);
+                // Need top fix the style tag
+                // The <pre> and <code> tags do not understand the <style> tag as a string. Not sure how to escape this so <code> tag in dialog displays as a string ?????
+                // Got it ASCII Table Replacements < > / "  are &lt; &gt; and &amp;
+                output = output.replace(/<style>/g, "&lt;style&gt;");
+                output = output.replaceAll('</style>', "&lt/style&gt;");
+                //<span> fix ASCII
+                output = output.replace(/<span>&#/g, "&lt;span&gt;&amp;&num;");
+                output = output.replaceAll('</span>', "&lt/span&gt;");
+
+                // Replace emoji HTML placeholder with escaped HTML code
+                const emojiSelector = document.getElementById('emoji-selector');
+                const selectedEmoji = emojiSelector.value;
+                const emojiHTML = `&#${selectedEmoji.codePointAt(0)};`;
+                const escapedEmojiHTML = `&amp;#${selectedEmoji.codePointAt(0)};`;
+                output = output.replace(/%Emoji_HTML%/g, escapedEmojiHTML);
+
+
+                //alert(output)
 
             /////////////////////////
             // Multi-Threaded Script
@@ -352,7 +486,10 @@
             // alert(scriptTypeElement.value);
             var scriptFunction = document.getElementById("script-function").value;
             if (scriptFunction === "ServiceStatus") {
-                document.getElementById("script-content").value = "Get-Service 'DNS' | Sort-Object status"
+                document.getElementById("script-content").value = "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-Service 'DNS' | Sort-Object status}"
+                document.getElementById("script-collection").value = "$objComputer  = New-Object psobject -Property @{\n\t\tComputerName = $computerName\n\t\tName = $result\n \t}\n \t$collectionTable += $objComputer\n"
+                
+                //document.getElementById("script-collection").value = "$objComputer  = New-Object psobject -Property @{ComputerName = $computerName;Name = $result.Name;Status = $result.Status;}\n;$collectionTable += $objComputer\n"
                 // "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-Service}"+
                 // "\n#$result = Invoke-command -computerName $computerName -ScriptBlock {Get-Service 'DNS' | Sort-Object status}"+
                 // "\n#$result = Invoke-command -computerName $computerName -ScriptBlock {Get-Service -DisplayName 'DNS' | Stop-Service}"+
@@ -366,8 +503,10 @@
                 document.getElementById("attribute1").innerHTML = "Status";
 
             }else if (scriptFunction === "OS") {
-                document.getElementById("script-content").value = "Get-ComputerInfo -Property OsVersion";
-                // "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-ComputerInfo -Property *version}";
+                // document.getElementById("script-content").value = "Get-ComputerInfo -Property OsVersion";
+                document.getElementById("script-content").value = "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-ComputerInfo -Property OsVersion}";
+                document.getElementById("script-collection").value = "$objComputer  = New-Object psobject -Property @{\n\t\tComputerName = $computerName\n\t\tOsVersion = $result.OsVersion\n \t}\n \t$collectionTable += $objComputer\n"
+                //document.getElementById("script-collection").value = "$objComputer  = New-Object psobject -Property @{ComputerName = $computerName;OsVersion = $result.OsVersion}\n;$collectionTable += $objComputer\n"
                 document.getElementById("script-description").value = scriptFunction;
                 scriptName = "Get-Computer"+scriptFunction+".ps1";
                 document.getElementById("script-name").value = "Get-Computer"+scriptFunction+".ps1";
@@ -378,7 +517,8 @@
 
             }else if (scriptFunction === "IP") {
                 document.getElementById("script-content").value = "$result = (Resolve-DnsName -Name $ComputerName).IPAddress";
-                // "$result = (Resolve-DnsName -Name $ComputerName).IPAddress}";
+                document.getElementById("script-collection").value = "$objComputer  = New-Object psobject -Property @{\n\t\tComputerName = $computerName\n\t\tIP_Address = $result\n \t}\n \t$collectionTable += $objComputer\n"
+                //document.getElementById("script-collection").value = "$objComputer  = New-Object psobject -Property @{ComputerName = $computerName;IP_Address = $result}\n;$collectionTable += $objComputer\n"
                 document.getElementById("script-description").value = scriptFunction;
                 scriptName = "Get-Computer"+scriptFunction+".ps1";
                 document.getElementById("script-name").value = "Get-Computer"+scriptFunction+".ps1";
@@ -388,8 +528,11 @@
                 document.getElementById("attribute1").innerHTML = "OsVersion";
 
             }else if (scriptFunction === "DNSCache") {
-                document.getElementById("script-content").value ="Clear-DnsServerCache -Force" ;
-                // "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-DnsServerCache}" +
+                document.getElementById("script-content").value ="$result = Invoke-command -computerName $computerName -ScriptBlock {Get-DnsServerCache}";
+                //document.getElementById("script-collection").value = "$objComputer  = New-Object psobject -Property @{ComputerName = $computerName;DNS_Server_Cache = $result}\n;$collectionTable += $objComputer\n"
+                document.getElementById("script-collection").value = "$objComputer  = New-Object psobject -Property @{\n\t\tComputerName = $computerName\n\t\tDNS_Server_Cache = $result\n \t}\n \t$collectionTable += $objComputer\n"
+                
+                // "$result = Invoke-command -computerName $computerName -ScriptBlock {Clear-DnsServerCache -Force}" +
                 // "\n#$result = Invoke-command -computerName $computerName -ScriptBlock {Show-DnsServerCache}" +
                 // "\n#$result = Invoke-command -computerName $computerName -ScriptBlock {Clear-DnsServerCache -Force}";
                 document.getElementById("script-description").value = scriptFunction;
@@ -401,7 +544,9 @@
 
 
             }else if (scriptFunction === "HotFix") {
-                document.getElementById("script-content").value = "Get-HotFix";
+                document.getElementById("script-content").value = "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-HotFix}";
+                document.getElementById("script-collection").value = "$objComputer  = New-Object psobject -Property @{\n\t\tComputerName = $computerName\n\t\tHotFix = $result\n \t}\n \t$collectionTable += $objComputer\n"
+                //document.getElementById("script-collection").value = "$objComputer  = New-Object psobject -Property @{ComputerName = $computerName;HotFix = $result}\n;$collectionTable += $objComputer\n"
                 document.getElementById("script-description").value = scriptFunction;
                 scriptName = "Get-Computer"+scriptFunction+".ps1";
                 document.getElementById("script-name").value = "Get-Computer"+scriptFunction+".ps1";
@@ -410,8 +555,9 @@
                 document.getElementById("example3").innerHTML = "Example 3: (Get-ADForest).Domains | %{ Get-ADDomainController -Filter * -Server $_ } | .\\"+scriptName;
 
             }else if (scriptFunction === "TimeZone") {
-                document.getElementById("script-content").value = "Get-TimeZone" ;
-                // "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-TimeZone}";
+                document.getElementById("script-content").value = "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-TimeZone}" ;
+                document.getElementById("script-collection").value = "$objComputer  = New-Object psobject -Property @{\n\t\tComputerName = $computerName\n\t\tTimeZone = $result\n \t}\n \t$collectionTable += $objComputer\n"
+                //document.getElementById("script-collection").value = "$objComputer  = New-Object psobject -Property @{ComputerName = $computerName;TimeZone = $result}\n;$collectionTable += $objComputer\n"
                 document.getElementById("script-description").value = scriptFunction;
                 scriptName = "Get-Computer"+scriptFunction+".ps1";
                 document.getElementById("script-name").value = "Get-Computer"+scriptFunction+".ps1";
@@ -422,8 +568,8 @@
 
 
             }else if (scriptFunction === "Memory") {
-                document.getElementById("script-content").value = "Get-ComputerInfo -Property *memory"  
-                // "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-ComputerInfo -Property *memory}";
+                document.getElementById("script-content").value = "$result = Invoke-command -computerName $computerName -ScriptBlock {Get-ComputerInfo -Property *memory}"  
+                document.getElementById("script-collection").value = "$objComputer  = New-Object psobject -Property @{\n\t\tComputerName = $computerName\n\t\tTotalPhysicalMemory = $result.CsTotalPhysicalMemory\n\t\tFreePhysicalMemory = $result.OsFreePhysicalMemory  \n \t}\n \t$collectionTable += $objComputer\n"
                 document.getElementById("script-description").value = scriptFunction;
                 scriptName = "Get-Computer"+scriptFunction+".ps1";
                 document.getElementById("script-name").value = "Get-Computer"+scriptFunction+".ps1";
@@ -433,14 +579,11 @@
                 document.getElementById("attribute1").innerHTML = "CsTotalPhysicalMemory"
             
             }else if (scriptFunction === "Events_Logon") {
-                document.getElementById("script-content").value = "#############################"+
-                "\n # Authentications in 1 Second"+
-                "\n ################"+
+                document.getElementById("script-content").value = "## Authentications in 1 Second\n"+
                 "\n $theEnd = (Get-Date).ToString('MM/dd/yyyy hh:mm:ss tt')"+
                 "\n $theStart = ([datetime]$theEnd).AddSeconds(-1).ToString('MM/dd/yyyy hh:mm:ss tt')"+
-                "\n $result = Invoke-command -computerName $computerName -ScriptBlock {(Get-WinEvent -FilterHashtable @{"+
-                "\n     logname='Security';id=4624;StartTime=$theStart;EndTime=$theEnd"+
-                "\n }).count}"  
+                "\n $result = Invoke-command -computerName $computerName -ScriptBlock {(Get-WinEvent -FilterHashtable @{logname='Security';id=4624;StartTime=$theStart;EndTime=$theEnd}).count}"  
+                document.getElementById("script-collection").value = "";
                 document.getElementById("script-description").value = scriptFunction;
                 scriptName = "Get-Computer"+scriptFunction+".ps1";
                 document.getElementById("script-name").value = "Get-Computer"+scriptFunction+".ps1";
@@ -486,14 +629,22 @@
 
 
    </script>
-    
+
+
+    <script>
+        document.getElementById('emoji-selector').addEventListener('change', function() {
+            const selectedEmoji = this.value;
+            const emojiHTML = `&#${selectedEmoji.codePointAt(0)};`;
+            document.getElementById('emoji-html-display').textContent = emojiHTML;
+        });
+    </script>
 <script>
     function copyText() {
 
         /* Copy text into clipboard */
         // var thetext = document.getElementById("script-content").value
         var thetext = document.getElementById("Popupwindow").innerText
-        alert(thetext)
+        // alert(thetext)
         navigator.clipboard.writeText(thetext)
 
         // var cpbtn = document.getElementByclass("copy-button")
@@ -639,13 +790,46 @@
         // var endCode = endCode.replace(/<br>/g, "\n");
         // alert(endCode)
         // var endCode = endCode.replace("<br>", "\n");
-        document.getElementById("script-content-end").innerHTML = endCode;
-        
+        document.getElementById("script-content-end").innerHTML = endCode;  
+        getEndAdvanced();   
     }
+
+    async function getEndAdvanced() {
+        const response = await fetch('./assets/snippets/endAdvanced.json',{                     
+        method: 'GET',
+        headers: {
+                'Content-Type': "application/json; charset=UTF-8",
+                "Access-Control-Allow-Headers":"*",
+                "Access-Control-Allow-Origin":"*",
+                "Access-Control-Request-Headers":"authorization"
+            }
+        //mode: "no-cors",  //cross origin resource sharing 
+        });
+        const json = await response.json();
+        console.log(json); 
+        var Array = json;
+        let length =  Array.length;
+        // alert(length);
+        var endCode = "\n";
+        // Loop through the options array and build script
+        for (var i = 0; i < Array.length; i++) {
+            //alert(Array[i].Line)
+            var endCode = endCode + Array[i].Line;
+        }
+        // var endCode = endCode.replace("<style>", "<style>");
+        // var endCode = endCode.replace("</style>", "</style>");
+        // var endCode = endCode.replace(/<br>/g, "\n");
+        // alert(endCode)
+        // var endCode = endCode.replace("<br>", "\n");
+        document.getElementById("script-content-endAdvanced").innerHTML = endCode;     
+    }
+
 </script>
+
+
    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script>
-         hljs.initHighlightingOnLoad();     
+         hljs.highlightAll();
     </script>
 </body>
 

@@ -36,16 +36,16 @@
         "Line": "   # Images\n"
     },
     {
-        "Line": "   [string]$RelativeImage = \"../images/xxx.png\",                               # Relative Path Webpage Reports\n"
+        "Line": "   [string]$RelativeImage = \"../images/xxx.png\",                            # Relative Path Webpage Reports\n"
     },
     {
         "Line": "   [string]$DistinguishedImagePath = \"C:/Scripts/xx-xx/Images/\",           # Distinguished Email Attachment\n"
     },
     {
-        "Line": "   [string]$TheImageFileName = \"xxx.png\",                                      # Image File Name Email\n"
+        "Line": "   [string]$TheImageFileName = \"xxx.png\",                                  # Image File Name Email\n"
     },
     {
-        "Line": "   [string]$emoji = '<span>%Emoji_HTML%</span>',\n"
+        "Line": "   [string]$emoji = '<span>%Emoji_HTML%</span>',                            # Emoji %Emoji_Icon% style=font-size:20px \n"
     },
     {
         "Line": "   # Email\n"
